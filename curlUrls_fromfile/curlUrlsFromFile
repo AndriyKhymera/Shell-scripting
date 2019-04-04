@@ -1,0 +1,64 @@
+#! /bin/sh
+PROGNAME='******CURL url******'
+VERSION=1.0
+
+function check_params {
+    if [-z ${INPUT+x}; then
+        echo "Input file not set"
+    ]
+}
+
+process_URL (){
+    #printf '%s\n' "$URL"
+        RESULT=$(curl -s -o /dev/null -w "%{http_code}" $URL)
+        printf '%s\n' "$RESULT"
+        case $RESULT in
+            200|401|402|403|404|503) 
+                echo "$URL, $RESULT" >>$DESTINATION ;;
+            301|302)
+                REDIRECT_RESULT=$(curl -s -o /dev/null -w "%{redirect_url}" $URL)
+                echo "$URL,$RESULT,$REDIRECT_RESULT" >>$DESTINATION ;;
+        esac
+}
+
+print_help (){
+    echo 'Help goes here'
+}
+
+print_version (){
+    echo $1 $2
+}
+
+while test -n "$1"; do
+    case "$1" in
+  --help|-h)
+    print_help
+    exit
+    ;;
+  --version|-v)
+    print_version $PROGNAME $VERSION
+    exit
+    ;;
+  --source|-s)
+    SOURCE=$2
+    shift
+    ;;
+  --destination|-d)
+    DESTINATION=$2
+    shift
+    ;;
+  *)
+    echo "Unknown argument: $1"
+    print_help
+    exit
+    ;;
+  esac
+  shift
+done
+
+echo $DESTINATION
+
+while read -r URL
+do
+    process_URL URL
+done <"$SOURCE"
