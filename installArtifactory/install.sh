@@ -1,17 +1,20 @@
-#!/bin/sh
+#!/bin/bash
 echo $OSTYPE
 case "$OSTYPE" in
   solaris*) echo "SOLARIS" ;;
   darwin*)  echo "OSX" ;; 
   linux-gnu)   
 	echo "LINUX" 	
-		#curl -L "https://jfrog.bintray.com/artifactory/jfrog-artifactory-oss-6.9.0.zip" -o jfrog-artifactory-oss-6.9.0.zip
-		filename='jfrog-artifactory-oss-6.9.0.zip'
-		outFilename="artifactory-oss-6.9.0"
-		unzip -p $filename > outFilename
-		export ARTIFACTORY_HOME=$outFilename
-		echo $ARTIFACTORY_HOME
-		sh $outFilename/bin/installService.sh
+		curl -L "https://jfrog.bintray.com/artifactory/jfrog-artifactory-oss-6.9.0.zip" -o jfrog-artifactory-oss-6.9.0.zip
+		filename="jfrog-artifactory-oss-6.9.0.zip"
+		#outFilename="${filename%.*}_unziped"
+		unzip 'jfrog-artifactory-oss-6.9.0'
+		#unzip $filename
+		bash "artifactory-oss-6.9.0/bin/installService.sh"
+		service artifactory start
+		service artifactory check
+		#to view log files
+		#tail -f artifactory-oss-6.9.0/logs/artifactory.log
 	;;
   bsd*)     echo "BSD" ;;
   msys*)    
@@ -23,9 +26,11 @@ case "$OSTYPE" in
 		#curl -s -o /dev/null -w "%{http_code}" $latestURL
 		#curl -L $latestURL
 		filename='jfrog-artifactory-oss-6.9.0.zip'
-		unzip -q $filename > outFilename
-		echo $outFilename
-		sh "artifactory-oss-6.9.0/artifactory-oss-6.9.0/bin/installService"
+		outFilename="${filename%.*}_unziped"
+		#curl -L "https://jfrog.bintray.com/artifactory/jfrog-artifactory-oss-6.9.0.zip" -o $filename
+		#mkdir $outFilename
+		#unzip $filename -d "${outFilename}"
+		bash "${outFilename}\artifactory-oss-6.9.0\bin\artifactory.sh"
 	;;
   *)        echo "unknown: $OSTYPE" ;;
 esac

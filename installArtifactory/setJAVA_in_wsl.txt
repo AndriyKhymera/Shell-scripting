@@ -1,0 +1,2 @@
+export JAVA_HOME='/mnt/c/Users/akhymera/Downloads/jdk1.8.0_201'
+export PATH=$JAVA_HOME:$PATH
