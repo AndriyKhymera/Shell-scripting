@@ -5,6 +5,8 @@ case "$OSTYPE" in
   darwin*)  echo "OSX" ;; 
   linux-gnu)   
 	echo "LINUX" 	
+		#curl to get last versio number
+		#curl -s -I -X GET 'https://api.bintray.com/content/jfrog/artifactory/jfrog-artifactory-oss-$latest.zip;bt_package=jfrog-artifactory-oss-zip' | grep Location | awk '{ print $2 }'
 		curl -L "https://jfrog.bintray.com/artifactory/jfrog-artifactory-oss-6.9.0.zip" -o jfrog-artifactory-oss-6.9.0.zip
 		filename="jfrog-artifactory-oss-6.9.0.zip"
 		#outFilename="${filename%.*}_unziped"
@@ -17,6 +19,7 @@ case "$OSTYPE" in
 		#tail -f artifactory-oss-6.9.0/logs/artifactory.log
 	;;
   bsd*)     echo "BSD" ;;
+  #havn't finishied because stoped at run as root
   msys*)    
 		echo "WINDOWS" 
 		#curl -L "https://jfrog.bintray.com/artifactory/jfrog-artifactory-oss-6.9.0.zip" -o jfrog-artifactory-oss-6.9.0.zip
