@@ -1,4 +1,5 @@
 #!/bin/bash
+#arrays values may be specified li this also (1 2 3)
 hrn_array=(
     1
     2
