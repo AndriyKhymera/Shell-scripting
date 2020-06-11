@@ -9,3 +9,9 @@ if [ -z ${awsRegionId} ]; then
 else
 	echo "It's not empty"
 fi
+
+if [ -n '' ]; then
+	echo "It's not empty"
+else
+	echo "It's empty"
+fi
